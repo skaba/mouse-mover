@@ -18,8 +18,7 @@ public class MouseMoverTask extends TimerTask {
     @Override
     public void run() {
         Duration idleTime = getIdleTimeWin32();
-        State newState = idleTime.compareTo(Duration.ofSeconds(30)) < 0 ? State.ONLINE
-                : idleTime.compareTo(Duration.ofMinutes(1)) > 0 ? State.AWAY : State.IDLE;
+        State newState = determineState(idleTime);
 
         if (newState != state) {
             state = newState;
@@ -51,8 +50,18 @@ public class MouseMoverTask extends TimerTask {
         return Duration.ofMillis(Kernel32.INSTANCE.GetTickCount() - lastInputInfo.dwTime);
     }
 
-    private static enum State {
+    enum State {
         UNKNOWN, ONLINE, IDLE, AWAY
+    }
+
+    static State determineState(Duration idleTime) {
+        if(idleTime.compareTo(Duration.ofSeconds(30)) < 0) {
+            return State.ONLINE;
+        }
+        if(idleTime.compareTo(Duration.ofMinutes(1)) < 0) {
+            return State.IDLE;
+        }
+        return State.AWAY;
     }
 
 }
