@@ -1,5 +1,10 @@
 package com.serkank.mousemover;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -8,12 +13,6 @@ import java.awt.TrayIcon;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MouseMover {
@@ -40,11 +39,11 @@ public class MouseMover {
 
         PopupMenu menu = new PopupMenu();
 
-        enableItem = new MenuItem ("Enable");
+        enableItem = new MenuItem("Enable");
         enableItem.addActionListener(e -> schedule());
         menu.add(enableItem);
 
-        disableItem = new MenuItem ("Disable");
+        disableItem = new MenuItem("Disable");
         disableItem.addActionListener(e -> pause());
         menu.add(disableItem);
 
@@ -60,7 +59,7 @@ public class MouseMover {
     }
 
     public void pause() {
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
         }
         mouseMoverTask = null;
