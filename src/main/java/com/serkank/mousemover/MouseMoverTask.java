@@ -12,6 +12,9 @@ import java.util.TimerTask;
 
 import static com.serkank.mousemover.jna.macos.CGEventSourceStateID.COMBINED_SESSION_STATE;
 import static com.serkank.mousemover.jna.macos.CGEventType.ANY;
+import static com.sun.jna.Platform.isMac;
+import static com.sun.jna.Platform.isWindows;
+
 
 @Slf4j
 public class MouseMoverTask extends TimerTask {
@@ -56,9 +59,9 @@ public class MouseMoverTask extends TimerTask {
 
     private static Duration getIdleTime() {
         var os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("mac")) {
+        if (isMac()) {
             return getIdleTimeMac();
-        } else if (os.contains("win")) {
+        } else if (isWindows()) {
             return getIdleTimeWin32();
         } else {
             throw new UnsupportedOperationException("Unsupported OS: " + os);
