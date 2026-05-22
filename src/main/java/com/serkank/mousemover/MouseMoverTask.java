@@ -19,6 +19,9 @@ import static com.sun.jna.Platform.isWindows;
 @Slf4j
 public class MouseMoverTask extends TimerTask {
 
+    private static Duration IDLE_LIMIT = Duration.ofSeconds(30);
+    private static Duration AWAY_LIMIT = Duration.ofMinutes(1);
+
     private State state = State.UNKNOWN;
 
     @Override
@@ -73,13 +76,13 @@ public class MouseMoverTask extends TimerTask {
     }
 
     static State determineState(Duration idleTime) {
-        if (idleTime.compareTo(Duration.ofSeconds(30)) < 0) {
-            return State.ONLINE;
+        if (idleTime.compareTo(AWAY_LIMIT) >= 0) {
+            return State.AWAY;
         }
-        if (idleTime.compareTo(Duration.ofMinutes(1)) < 0) {
+        if (idleTime.compareTo(IDLE_LIMIT) >= 0) {
             return State.IDLE;
         }
-        return State.AWAY;
+        return State.ONLINE;
     }
 
 }
