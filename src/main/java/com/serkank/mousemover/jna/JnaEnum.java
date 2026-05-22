@@ -1,5 +1,5 @@
 package com.serkank.mousemover.jna;
 
-public interface JnaEnum<E extends Enum<E>> {
+public interface JnaEnum {
     int getIntValue();
 }
